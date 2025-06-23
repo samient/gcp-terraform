@@ -2,43 +2,37 @@ pipeline {
   agent any
 
   environment {
-    GOOGLE_CREDENTIALS = credentials('gcp-terraform-creds') // Add in Jenkins
+    GOOGLE_CREDENTIALS = credentials('gcp-terraform-creds') // Set this in Jenkins
     TF_VAR_project_id = 'test-data-462007'
   }
 
   stages {
     stage('Checkout') {
       steps {
-        git url: 'https://github.com/samient/gcp-terraform.git', branch: 'main'
+        checkout scm
       }
     }
 
     stage('Terraform Init') {
       steps {
-        dir('gcp-terraform') {
-          withEnv(["GOOGLE_APPLICATION_CREDENTIALS=${GOOGLE_CREDENTIALS}"]) {
-            sh 'terraform init'
-          }
+        withEnv(["GOOGLE_APPLICATION_CREDENTIALS=${GOOGLE_CREDENTIALS}"]) {
+          sh 'terraform init'
         }
       }
     }
 
     stage('Terraform Plan') {
       steps {
-        dir('gcp-terraform') {
-          withEnv(["GOOGLE_APPLICATION_CREDENTIALS=${GOOGLE_CREDENTIALS}"]) {
-            sh 'terraform plan -var-file=terraform.tfvars'
-          }
+        withEnv(["GOOGLE_APPLICATION_CREDENTIALS=${GOOGLE_CREDENTIALS}"]) {
+          sh 'terraform plan -var-file=terraform.tfvars'
         }
       }
     }
 
     stage('Terraform Apply') {
       steps {
-        dir('gcp-terraform') {
-          withEnv(["GOOGLE_APPLICATION_CREDENTIALS=${GOOGLE_CREDENTIALS}"]) {
-            sh 'terraform apply -auto-approve -var-file=terraform.tfvars'
-          }
+        withEnv(["GOOGLE_APPLICATION_CREDENTIALS=${GOOGLE_CREDENTIALS}"]) {
+          sh 'terraform apply -auto-approve -var-file=terraform.tfvars'
         }
       }
     }
@@ -46,7 +40,7 @@ pipeline {
 
   post {
     always {
-      echo 'Pipeline Finished'
+      echo 'Pipeline completed.'
     }
   }
 }
