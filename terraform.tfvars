@@ -1,0 +1,8 @@
+project_id   = "test-data-462007"
+region       = "us-central1"
+zone         = "us-central1-a"
+vpc_name     = "dev-vpc"
+subnet_name  = "dev-subnet"
+subnet_cidr  = "10.0.0.0/24"
+vm_name      = "dev-vm"
+vm_type      = "e2-medium"
