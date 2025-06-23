@@ -32,5 +32,5 @@ resource "google_compute_instance" "vm_instance" {
     access_config {} # for external IP
   }
 
-  tags = ["web"]
+  tags = ["Amits-VM"]
 }
