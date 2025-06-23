@@ -1,6 +1,14 @@
 pipeline {
   agent any
 
+  parameters {
+    choice(
+      name: 'ACTION',
+      choices: ['apply', 'destroy'],
+      description: 'Choose whether to apply or destroy the Terraform infrastructure.'
+    )
+  }
+
   environment {
     GOOGLE_APPLICATION_CREDENTIALS = credentials('gcp-creds-file')
     TF_VAR_project_id = 'test-data-462007'
@@ -22,8 +30,6 @@ pipeline {
             unzip -o terraform.zip
             mv terraform $LOCAL_BIN/
             chmod +x $LOCAL_BIN/terraform
-          else
-            echo "Terraform already exists in $LOCAL_BIN"
           fi
 
           terraform version
@@ -42,6 +48,9 @@ pipeline {
     }
 
     stage('Terraform Plan') {
+      when {
+        expression { params.ACTION == 'apply' }
+      }
       steps {
         sh '''
           export PATH=$LOCAL_BIN:$PATH
@@ -52,11 +61,27 @@ pipeline {
     }
 
     stage('Terraform Apply') {
+      when {
+        expression { params.ACTION == 'apply' }
+      }
       steps {
         sh '''
           export PATH=$LOCAL_BIN:$PATH
           cd gcp-terraform
           terraform apply -auto-approve -var-file=terraform.tfvars
+        '''
+      }
+    }
+
+    stage('Terraform Destroy') {
+      when {
+        expression { params.ACTION == 'destroy' }
+      }
+      steps {
+        sh '''
+          export PATH=$LOCAL_BIN:$PATH
+          cd gcp-terraform
+          terraform destroy -auto-approve -var-file=terraform.tfvars
         '''
       }
     }
