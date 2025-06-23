@@ -2,20 +2,14 @@ pipeline {
   agent any
 
   environment {
-    GOOGLE_CREDENTIALS = credentials('gcp-terraform-creds') // Set this in Jenkins
+    GOOGLE_APPLICATION_CREDENTIALS = credentials('gcp-creds-file')
     TF_VAR_project_id = 'test-data-462007'
   }
 
   stages {
-    stage('Checkout') {
-      steps {
-        checkout scm
-      }
-    }
-
     stage('Terraform Init') {
       steps {
-        withEnv(["GOOGLE_APPLICATION_CREDENTIALS=${GOOGLE_CREDENTIALS}"]) {
+        dir('gcp-terraform') {
           sh 'terraform init'
         }
       }
@@ -23,7 +17,7 @@ pipeline {
 
     stage('Terraform Plan') {
       steps {
-        withEnv(["GOOGLE_APPLICATION_CREDENTIALS=${GOOGLE_CREDENTIALS}"]) {
+        dir('gcp-terraform') {
           sh 'terraform plan -var-file=terraform.tfvars'
         }
       }
@@ -31,16 +25,10 @@ pipeline {
 
     stage('Terraform Apply') {
       steps {
-        withEnv(["GOOGLE_APPLICATION_CREDENTIALS=${GOOGLE_CREDENTIALS}"]) {
+        dir('gcp-terraform') {
           sh 'terraform apply -auto-approve -var-file=terraform.tfvars'
         }
       }
-    }
-  }
-
-  post {
-    always {
-      echo 'Pipeline completed.'
     }
   }
 }
