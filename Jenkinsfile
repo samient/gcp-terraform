@@ -7,11 +7,16 @@ pipeline {
       choices: ['apply', 'destroy'],
       description: 'Choose whether to apply or destroy the Terraform infrastructure.'
     )
+
+    choice(
+      name: 'GCP_PROJECT',
+      choices: ['able-analyst-434310-q9', 'test-data-462007'],
+      description: 'Select the GCP project where infrastructure will be managed.'
+    )
   }
 
   environment {
-    GOOGLE_APPLICATION_CREDENTIALS = credentials('gcp-creds-file')
-    TF_VAR_project_id = 'test-data-462007'
+    GOOGLE_APPLICATION_CREDENTIALS = credentials('gcp-creds-file') // make sure this credential has access to both projects
     TF_VERSION = "1.7.5"
     LOCAL_BIN = "${env.WORKSPACE}/bin"
     PATH = "${env.WORKSPACE}/bin:${env.PATH}"
@@ -55,7 +60,7 @@ pipeline {
         sh '''
           export PATH=$LOCAL_BIN:$PATH
           cd gcp-terraform
-          terraform plan -var-file=terraform.tfvars
+          terraform plan -var="project_id=${GCP_PROJECT}" -var-file=terraform.tfvars
         '''
       }
     }
@@ -68,7 +73,7 @@ pipeline {
         sh '''
           export PATH=$LOCAL_BIN:$PATH
           cd gcp-terraform
-          terraform apply -auto-approve -var-file=terraform.tfvars
+          terraform apply -auto-approve -var="project_id=${GCP_PROJECT}" -var-file=terraform.tfvars
         '''
       }
     }
@@ -81,7 +86,7 @@ pipeline {
         sh '''
           export PATH=$LOCAL_BIN:$PATH
           cd gcp-terraform
-          terraform destroy -auto-approve -var-file=terraform.tfvars
+          terraform destroy -auto-approve -var="project_id=${GCP_PROJECT}" -var-file=terraform.tfvars
         '''
       }
     }
