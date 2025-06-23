@@ -2,13 +2,14 @@ pipeline {
   agent any
 
   environment {
-    GIT_CREDENTIALS = credentials('github-creds')
+    GOOGLE_CREDENTIALS = credentials('gcp-terraform-creds') // Add in Jenkins
+    TF_VAR_project_id = 'test-data-462007'
   }
 
   stages {
     stage('Checkout') {
       steps {
-        git credentialsId: "${GIT_CREDENTIALS}", url: 'https://github.com/samient/gcp-terraform.git', branch: 'main'
+        git url: 'https://github.com/samient/gcp-terraform.git', branch: 'main'
       }
     }
 
