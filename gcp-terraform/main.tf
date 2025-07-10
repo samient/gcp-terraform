@@ -15,22 +15,20 @@ resource "google_compute_subnetwork" "subnet" {
   network       = google_compute_network.vpc_network.id
 }
 
-resource "google_compute_instance" "vm_instance" {
-  name         = var.vm_name
-  machine_type = var.vm_type
-  zone         = var.zone
+resource "google_compute_firewall" "rules" {
+  project     = "${var.project_id}"
+  name        = var.firewall_rule
+  direction   = "INGRESS"
+  priority    = 1000
+  network     = "default"
+  description = "Creates firewall rule targeting tagged instances"
 
-  boot_disk {
-    initialize_params {
-      image = "debian-cloud/debian-11"
-    }
+  allow {
+    protocol  = "tcp"
+    ports     = ["80", "8080", "1000-2000"]
   }
 
-  network_interface {
-    network    = google_compute_network.vpc_network.id
-    subnetwork = google_compute_subnetwork.subnet.id
-    access_config {} # for external IP
-  }
-
-  tags = ["tag"]
+  source_tags = ["test"]
+  
 }
+
