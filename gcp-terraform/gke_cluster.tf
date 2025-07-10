@@ -3,7 +3,7 @@ resource "google_service_account" "default" {
   display_name = "Service Account"
 }
 
-resource "google_container_cluster" "primary1" {
+resource "google_container_cluster" "cluster_name" {
   name     = var.gke_cluster_name
   location = var.region
   project  = var.project_id
