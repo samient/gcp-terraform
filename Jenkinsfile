@@ -10,7 +10,7 @@ pipeline {
 
     choice(
       name: 'GCP_PROJECT',
-      choices: ['able-analyst-434310-q9', 'test-data-462007'],
+      choices: ['test-data-462007' , 'able-analyst-434310-q9'],
       description: 'Select the GCP project where infrastructure will be managed.'
     )
   }

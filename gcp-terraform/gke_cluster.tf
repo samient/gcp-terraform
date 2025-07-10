@@ -6,6 +6,8 @@ resource "google_service_account" "default" {
 resource "google_container_cluster" "cluster_name" {
   name     = var.gke_cluster_name
   location = var.region
+  network  = google_compute_network.vpc_network.id
+    subnetwork = google_compute_subnetwork.subnet.id
   project  = var.project_id
     initial_node_count = 1  
     

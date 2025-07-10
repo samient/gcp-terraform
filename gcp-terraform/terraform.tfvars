@@ -1,4 +1,4 @@
-project_id   = "test-data-462007"
+project_id   = var.GCP_PROJECT
 region       = "us-central1"
 zone         = "us-central1-a"
 vpc_name     = "dev-vpc"
