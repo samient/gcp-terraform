@@ -1,4 +1,4 @@
-resource "google_storage_bucket" "static-site" {
+resource "google_storage_bucket" "bucket_name" {
   name          = var.bucket_name
   project       = var.project_id
   location      = var.bucket_location
