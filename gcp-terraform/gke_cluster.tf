@@ -3,10 +3,11 @@ resource "google_service_account" "default" {
   display_name = "Service Account"
 }
 
-resource "google_container_cluster" "cluster_name" {
+resource "google_container_cluster" "primary1" {
   name     = var.gke_cluster_name
   location = var.region
   project  = var.project_id
+    initial_node_count = 1  
     
     # Enable deletion protection to prevent accidental deletion of the cluster.
     deletion_protection = var.deletion_protection
