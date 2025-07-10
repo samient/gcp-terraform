@@ -15,3 +15,9 @@ variable "firewall_rule" {}
 variable "bucket_name" {}
 variable "bucket_location" {}
 variable "storage_class" {}
+variable "gke_cluster_name" {}
+variable "gke_node_pool_name" {}
+variable "gke_node_pool_machine_type" {}
+variable "gke_node_pool_name" {}
+variable "master_ipv4_cidr_block" {} 
+variable "min_master_version" {}
