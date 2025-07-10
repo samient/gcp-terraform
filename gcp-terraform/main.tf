@@ -20,7 +20,8 @@ resource "google_compute_firewall" "rules" {
   name        = var.firewall_rule
   direction   = "INGRESS"
   priority    = 1000
-  network     = "default"
+  network     = google_compute_network.vpc_network.id
+  target_tags = ["test"]
   description = "Creates firewall rule targeting tagged instances"
 
   allow {
