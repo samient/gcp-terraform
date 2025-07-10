@@ -4,7 +4,7 @@ resource "google_service_account" "default" {
 }
 
 resource "google_container_cluster" "primary" {
-  name     = "my-gke-cluster"
+  name     = var.gke_cluster_name
   location = var.region
   project  = var.project_id
     initial_node_count = 3
