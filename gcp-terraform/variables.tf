@@ -20,4 +20,4 @@ variable "gke_node_pool_name" {}
 variable "gke_node_pool_machine_type" {}
 
 variable "master_ipv4_cidr_block" {} 
-variable "min_master_version" {}
+# variable "min_master_version" {}
