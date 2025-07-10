@@ -1,4 +1,5 @@
-project_id   = var.GCP_PROJECT
+project_id   = "test-data-462007"
+# project_id   = "able-analyst-434310-q9"
 region       = "us-central1"
 zone         = "us-central1-a"
 vpc_name     = "dev-vpc"
