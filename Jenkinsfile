@@ -1,10 +1,18 @@
 pipeline {
   agent any
 
+
+  parameters {
+    choice(
+      name: 'environment',
+      choices: ['dev', 'prod'],
+      description: 'Select the environment for the Terraform deployment.'
+    )
+  }
   parameters {
     choice(
       name: 'ACTION',
-      choices: ['apply', 'destroy'],
+      choices: ['plan', 'apply', 'destroy'],
       description: 'Choose whether to apply or destroy the Terraform infrastructure.'
     )
 
@@ -47,7 +55,7 @@ pipeline {
         sh '''
           export PATH=$LOCAL_BIN:$PATH
           cd gcp-terraform
-          terraform init
+          terraform init -input=false -backend-config="bucket=tfstate-462007" -backend-config="prefix=terraform/state/${GCP_PROJECT}"
         '''
       }
     }
