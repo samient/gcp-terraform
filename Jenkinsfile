@@ -1,26 +1,21 @@
 pipeline {
   agent any
 
-
-  parameters {
-    choice(
-      name: 'environment',
-      choices: ['dev', 'prod'],
-      description: 'Select the environment for the Terraform deployment.'
-    )
-  }
-  
   parameters {
     choice(
       name: 'ACTION',
       choices: ['plan', 'apply', 'destroy'],
-      description: 'Choose whether to apply or destroy the Terraform infrastructure.'
+      description: 'Choose Terraform action'
     )
-
     choice(
       name: 'GCP_PROJECT',
-      choices: ['test-data-462007' , 'able-analyst-434310-q9'],
-      description: 'Select the GCP project where infrastructure will be managed.'
+      choices: ['test-data-462007', 'able-analyst-434310-q9'],
+      description: 'Select GCP project'
+    )
+    choice(
+      name: 'ENVIRONMENT',
+      choices: ['dev', 'prod'],
+      description: 'Select deployment environment'
     )
   }
 
